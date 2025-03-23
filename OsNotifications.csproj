@@ -4,7 +4,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <Version>0.1.0</Version>
+        <Version>0.1.1</Version>
         <Authors>DemonExposer</Authors>
         <Description>Native OS notifications in .NET</Description>
         <RepositoryUrl>https://github.com/DemonExposer/OsNotifications</RepositoryUrl>
@@ -17,7 +17,10 @@
     </PropertyGroup>
     
     <Target Name="CompileMacDependencies" BeforeTargets="Build">
-        <Exec Command="clang -dynamiclib -o $(OutputPath)macNotification.dylib macNotification.m -framework Foundation"/>
+        <Exec Command="clang -dynamiclib -o $(OutputPath)macNotification_x86_64.dylib macNotification.m -framework Foundation -arch x86_64"/>
+        <Exec Command="clang -dynamiclib -o $(OutputPath)macNotification_arm64.dylib macNotification.m -framework Foundation -arch arm64"/>
+        <Exec Command="lipo -create -output $(OutputPath)macNotification.dylib $(OutputPath)macNotification_x86_64.dylib $(OutputPath)macNotification_arm64.dylib"/>
+        <Exec Command="rm $(OutputPath)macNotification_x86_64.dylib $(OutputPath)macNotification_arm64.dylib"/>
     </Target>
 
     <ItemGroup>
