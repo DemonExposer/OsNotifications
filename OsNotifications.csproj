@@ -4,7 +4,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <Version>0.1.1</Version>
+        <Version>0.2.0</Version>
         <Authors>DemonExposer</Authors>
         <Description>Native OS notifications in .NET</Description>
         <RepositoryUrl>https://github.com/DemonExposer/OsNotifications</RepositoryUrl>
