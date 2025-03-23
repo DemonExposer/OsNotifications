@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+    
+    <Target Name="CompileMacDependencies" BeforeTargets="Build">
+        <Exec Command="clang -dynamiclib -o $(OutputPath)macNotification.dylib macNotification.m -framework Foundation"/>
+    </Target>
+
+    <ItemGroup>
+        <ContentWithTargetPath Include="$(OutputPath)macNotification.dylib">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <TargetPath>macNotification.dylib</TargetPath>
+        </ContentWithTargetPath>
+        <None Include="$(OutputPath)macNotification.dylib"/>
+    </ItemGroup>
+
+</Project>
