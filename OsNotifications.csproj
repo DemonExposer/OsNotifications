@@ -4,6 +4,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <Version>0.1.0</Version>
     </PropertyGroup>
     
     <Target Name="CompileMacDependencies" BeforeTargets="Build">
@@ -18,4 +19,12 @@
         <None Include="$(OutputPath)macNotification.dylib"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <Content Include="$(OutputPath)macNotification.dylib">
+            <Pack>true</Pack>
+            <PackageCopyToOutput>true</PackageCopyToOutput>
+            <PackageFlatten>true</PackageFlatten>
+            <PackagePath>contentFiles\any\any</PackagePath>
+        </Content>
+    </ItemGroup>
 </Project>
