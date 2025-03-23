@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <Version>0.1.0</Version>
+        <Authors>DemonExposer</Authors>
         <Description>Native OS notifications in .NET</Description>
         <RepositoryUrl>https://github.com/DemonExposer/OsNotifications</RepositoryUrl>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
