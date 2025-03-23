@@ -20,6 +20,10 @@
     </Target>
 
     <ItemGroup>
+        <None Include="README.md" Pack="true" PackagePath=""/>
+    </ItemGroup>
+
+    <ItemGroup>
         <ContentWithTargetPath Include="$(OutputPath)macNotification.dylib">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <TargetPath>macNotification.dylib</TargetPath>
