@@ -5,6 +5,14 @@
         <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <Version>0.1.0</Version>
+        <Description>Native OS notifications in .NET</Description>
+        <RepositoryUrl>https://github.com/DemonExposer/OsNotifications</RepositoryUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/DemonExposer/OsNotifications</PackageProjectUrl>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <Title>OsNotifications</Title>
+        <Copyright>Copyright (c) 2025 DemonExposer</Copyright>
     </PropertyGroup>
     
     <Target Name="CompileMacDependencies" BeforeTargets="Build">
