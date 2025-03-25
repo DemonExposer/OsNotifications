@@ -15,24 +15,28 @@
         <Title>OsNotifications</Title>
         <Copyright>Copyright (c) 2025 DemonExposer</Copyright>
     </PropertyGroup>
-    
-    <Target Name="CompileMacDependencies" BeforeTargets="Build">
-        <Exec Command="clang -dynamiclib -o $(OutputPath)macNotification_x86_64.dylib macNotification.m -framework Foundation -arch x86_64"/>
-        <Exec Command="clang -dynamiclib -o $(OutputPath)macNotification_arm64.dylib macNotification.m -framework Foundation -arch arm64"/>
-        <Exec Command="lipo -create -output $(OutputPath)macNotification.dylib $(OutputPath)macNotification_x86_64.dylib $(OutputPath)macNotification_arm64.dylib"/>
-        <Exec Command="rm $(OutputPath)macNotification_x86_64.dylib $(OutputPath)macNotification_arm64.dylib"/>
+
+	<Target Name="CompileMacDependencies" BeforeTargets="Build">
+        <Exec Command="clang -dynamiclib -o $(OutputPath)macNotification_x86_64.dylib macNotification.m -framework Foundation -arch x86_64" />
+        <Exec Command="clang -dynamiclib -o $(OutputPath)macNotification_arm64.dylib macNotification.m -framework Foundation -arch arm64" />
+        <Exec Command="lipo -create -output $(OutputPath)macNotification.dylib $(OutputPath)macNotification_x86_64.dylib $(OutputPath)macNotification_arm64.dylib" />
+        <Exec Command="rm $(OutputPath)macNotification_x86_64.dylib $(OutputPath)macNotification_arm64.dylib" />
     </Target>
 
-    <ItemGroup>
-        <None Include="README.md" Pack="true" PackagePath=""/>
-    </ItemGroup>
+	<Target Name="CompileWindowsDependencies" BeforeTargets="Build">
+		<Exec Command="dotnet publish -c Release -r win-x64 ..\WindowsNotification\WindowsNotification.csproj -o $(OutputPath)lib\"/>
+	</Target>
 
     <ItemGroup>
+        <None Include="..\README.md" Pack="true" PackagePath="" />
+    </ItemGroup>
+	
+	<ItemGroup>
         <ContentWithTargetPath Include="$(OutputPath)macNotification.dylib">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <TargetPath>macNotification.dylib</TargetPath>
         </ContentWithTargetPath>
-        <None Include="$(OutputPath)macNotification.dylib"/>
+        <None Include="$(OutputPath)macNotification.dylib" />
     </ItemGroup>
 
     <ItemGroup>
@@ -43,4 +47,17 @@
             <PackagePath>contentFiles\any\any</PackagePath>
         </Content>
     </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="$(OutputPath)lib\*.dll">
+            <Pack>true</Pack>
+            <PackageCopyToOutput>true</PackageCopyToOutput>
+            <PackageFlatten>true</PackageFlatten>
+            <PackagePath>contentFiles\any\any</PackagePath>
+        </Content>
+    </ItemGroup>
+
+	<Target Name="CleanLib" AfterTargets="Clean">
+		<RemoveDir Directories="$(OutputPath)lib" Condition="Exists('$(OutputPath)lib')"/>
+	</Target>
 </Project>

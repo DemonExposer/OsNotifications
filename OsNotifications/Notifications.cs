@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 namespace OsNotifications;
@@ -32,6 +33,12 @@ public partial class Notifications {
 	}
 
 	private static void ShowNotificationWindows(string title, string message) {
-		
+		string dllPath = Path.Combine(AppContext.BaseDirectory, "WindowsNotification.dll");
+		Assembly assembly = Assembly.LoadFrom(dllPath);
+		Type? windowsNotificationClass = assembly.GetType("WindowsNotification.WindowsNotification");
+		MethodInfo? showNotificationMethod = windowsNotificationClass?.GetMethod("ShowNotification");
+
+		object? instance = Activator.CreateInstance(windowsNotificationClass!);
+		showNotificationMethod?.Invoke(instance, [title, message]);
 	}
 }
