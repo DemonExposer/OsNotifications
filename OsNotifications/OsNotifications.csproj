@@ -24,7 +24,7 @@
     </Target>
 
 	<Target Name="CompileWindowsDependencies" BeforeTargets="Build">
-		<Exec Command="dotnet publish -c Release -r win-x64 ..\WindowsNotification\WindowsNotification.csproj -o $(OutputPath)lib\"/>
+		<Exec Command="dotnet publish -c Release -r win-x64 ../WindowsNotification/WindowsNotification.csproj -o $(OutputPath)lib/"/>
 	</Target>
 
     <ItemGroup>
@@ -44,7 +44,7 @@
             <Pack>true</Pack>
             <PackageCopyToOutput>true</PackageCopyToOutput>
             <PackageFlatten>true</PackageFlatten>
-            <PackagePath>contentFiles\any\any</PackagePath>
+            <PackagePath>runtimes\osx\native\</PackagePath>
         </Content>
     </ItemGroup>
 
@@ -53,7 +53,7 @@
             <Pack>true</Pack>
             <PackageCopyToOutput>true</PackageCopyToOutput>
             <PackageFlatten>true</PackageFlatten>
-            <PackagePath>contentFiles\any\any</PackagePath>
+            <PackagePath>runtimes\win-x64\native\</PackagePath>
         </Content>
     </ItemGroup>
 
