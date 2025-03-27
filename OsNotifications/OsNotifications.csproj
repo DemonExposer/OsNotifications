@@ -57,6 +57,15 @@
         </Content>
     </ItemGroup>
 
+	<ItemGroup>
+		<Content Include="ThirdPartyLicenses\Win\*">
+			<Pack>true</Pack>
+			<PackageCopyToOutput>true</PackageCopyToOutput>
+			<PackageFlatten>true</PackageFlatten>
+			<PackagePath>runtimes\win-x64\native\</PackagePath>
+		</Content>
+	</ItemGroup>
+
 	<Target Name="CleanLib" AfterTargets="Clean">
 		<RemoveDir Directories="$(OutputPath)lib" Condition="Exists('$(OutputPath)lib')"/>
 	</Target>
