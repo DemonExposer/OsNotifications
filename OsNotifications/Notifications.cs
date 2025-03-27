@@ -21,9 +21,7 @@ public partial class Notifications {
 			throw new PlatformNotSupportedException("Notifications are only supported on Linux, MacOS and Windows");
 	}
 
-	private static void ShowNotificationLinux(string title, string message) {
-		Process.Start("notify-send", $"\"{title}\" \"{message}\"");
-	}
+	private static void ShowNotificationLinux(string title, string message) => Process.Start("notify-send", $"\"{title}\" \"{message}\"").WaitForExit();
 
 	private static void ShowNotificationMac(string title, string message, string informativeText) {
 		if (BundleIdentifier == null)
