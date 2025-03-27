@@ -21,7 +21,7 @@ dotnet add package OsNotifications
 
 ## Build from source
 The best way to build this project is on MacOS, because of the Objective-C code needing to be compiled.
-Make sure you have `clang` installed and then just run:
+Make sure you have `clang` installed and then just run the following command in the `OsNotifications` folder (so the folder that contains `OsNotifications.csproj`):
 ```
 dotnet pack --configuration Release
 ```
