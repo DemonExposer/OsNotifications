@@ -21,11 +21,12 @@ dotnet add package OsNotifications
 
 ## Build from source
 The best way to build this project is on MacOS, because of the Objective-C code needing to be compiled.
-Make sure you have `clang` installed and then just run the following command in the `OsNotifications` folder (so the folder that contains `OsNotifications.csproj`):
+Make sure you have `clang` installed and then just run the following commands in the `OsNotifications` folder (so the folder that contains `OsNotifications.csproj`):
 ```
-dotnet pack --configuration Release
+dotnet build --configuration Release
+dotnet pack --no-build --configuration Release
 ```
 You will get a `.nupkg` file which you can import using NuGet.
-Probably, just running `dotnet build` or `dotnet publish ...` will not work properly. I'm not sure about it, but I recommend using the `pack` command.
+Probably, just running `dotnet build` or `dotnet publish ...` while referencing the project will not work properly. I'm not sure about it, but I recommend using the `pack` command.
 
 It should be possible to build this on Linux as well, you just need to find the appropriate libraries to compile Objective-C with and then probably change the `clang` command in `OsNotifications/OsNotifications.csproj` to something more Linux-friendly.
