@@ -4,7 +4,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <Version>0.3.0</Version>
+        <Version>1.0.0</Version>
         <Authors>DemonExposer</Authors>
         <Description>Native OS notifications in .NET</Description>
         <RepositoryUrl>https://github.com/DemonExposer/OsNotifications</RepositoryUrl>
@@ -58,7 +58,7 @@
     </ItemGroup>
 
 	<ItemGroup>
-		<Content Include="ThirdPartyLicenses\Win\*">
+		<Content Include="..\ThirdPartyLicenses\Win\*">
 			<Pack>true</Pack>
 			<PackageCopyToOutput>true</PackageCopyToOutput>
 			<PackageFlatten>true</PackageFlatten>
