@@ -11,7 +11,9 @@ Notifications.ShowNotification("notification-title");
 ```
 
 Of course this works without flaws on Linux and MacOS, but not on Windows... <br/>
-If the application exits right after the `ShowNotification` call, the notification will not be shown on Windows, because of the asynchronous nature of Toast notifications. So, either don't display a notification just before exiting or just put a tiny delay (1000ms should be plenty) after the `ShowNotification` call. 
+If the application exits right after the `ShowNotification` call, the notification will not be shown on Windows, because of the asynchronous nature of Toast notifications. So, either don't display a notification just before exiting or just put a tiny delay (1000ms should be plenty) after the `ShowNotification` call.
+
+This library uses `Microsoft.Toolkit.Uwp.Notifications` to display notifications on Windows. This dependency is not shown in the NuGet package because referencing a Windows library statically from a cross-platform library is something I could not figure out how to do. So, the DLLs are included in the NuGet package for this library instead. If anyone has a better fix for this, let me know.
 
 ## Install
 In your .NET project, execute the following command:
