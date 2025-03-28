@@ -31,9 +31,18 @@ public partial class Notifications {
 	}
 
 	private static void ShowNotificationWindows(string title, string message) {
-		string dllPath = Path.Combine(AppContext.BaseDirectory, "WindowsNotification.dll");
-		Assembly assembly = Assembly.LoadFrom(dllPath);
-		Type? windowsNotificationClass = assembly.GetType("WindowsNotification.WindowsNotification");
+		const string winNotifDll = "WindowsNotification.dll";
+		string dllPath = Path.Combine(AppContext.BaseDirectory, winNotifDll);
+
+		string nativePath = Path.Combine(AppContext.BaseDirectory, "runtimes", "win-x64", "native");
+		Environment.SetEnvironmentVariable("PATH", nativePath + ";" + Environment.GetEnvironmentVariable("PATH"));
+
+		if (!File.Exists(dllPath))
+			dllPath = Path.Combine(nativePath, winNotifDll);
+
+		// In case PublishSingleFile is set to true, load the library from the executable itself (this is the case if dllPath does not exist).
+		Assembly assembly = File.Exists(dllPath) ? Assembly.LoadFrom(dllPath) : Assembly.Load(winNotifDll[..^4]);
+		Type ? windowsNotificationClass = assembly.GetType("WindowsNotification.WindowsNotification");
 		MethodInfo? showNotificationMethod = windowsNotificationClass?.GetMethod("ShowNotification");
 
 		object? instance = Activator.CreateInstance(windowsNotificationClass!);

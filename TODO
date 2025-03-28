@@ -1,2 +1,1 @@
-Fix Windows issue where dlls cannot be found when running dotnet run (because they're in runtimes/win-x64/native)
-Make it possible to find libraries when publishing to single file
+Make it possible to find libraries when publishing to single file (check whether this works on MacOS)
