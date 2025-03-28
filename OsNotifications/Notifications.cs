@@ -42,7 +42,7 @@ public partial class Notifications {
 
 		// In case PublishSingleFile is set to true, load the library from the executable itself (this is the case if dllPath does not exist).
 		Assembly assembly = File.Exists(dllPath) ? Assembly.LoadFrom(dllPath) : Assembly.Load(winNotifDll[..^4]);
-		Type ? windowsNotificationClass = assembly.GetType("WindowsNotification.WindowsNotification");
+		Type? windowsNotificationClass = assembly.GetType("WindowsNotification.WindowsNotification");
 		MethodInfo? showNotificationMethod = windowsNotificationClass?.GetMethod("ShowNotification");
 
 		object? instance = Activator.CreateInstance(windowsNotificationClass!);
