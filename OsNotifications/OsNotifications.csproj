@@ -1,61 +1,61 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <Version>1.1.0</Version>
-        <Authors>DemonExposer</Authors>
-        <Description>Native OS notifications in .NET</Description>
-        <RepositoryUrl>https://github.com/DemonExposer/OsNotifications</RepositoryUrl>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <PackageProjectUrl>https://github.com/DemonExposer/OsNotifications</PackageProjectUrl>
-        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-        <PackageReadmeFile>README.md</PackageReadmeFile>
-        <Title>OsNotifications</Title>
-        <Copyright>Copyright (c) 2025 DemonExposer</Copyright>
-    </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<Version>1.1.0</Version>
+		<Authors>DemonExposer</Authors>
+		<Description>Native OS notifications in .NET</Description>
+		<RepositoryUrl>https://github.com/DemonExposer/OsNotifications</RepositoryUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/DemonExposer/OsNotifications</PackageProjectUrl>
+		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<Title>OsNotifications</Title>
+		<Copyright>Copyright (c) 2025 DemonExposer</Copyright>
+	</PropertyGroup>
 
 	<Target Name="CompileMacDependencies" BeforeTargets="Build">
-        <Exec Command="clang -dynamiclib -o $(OutputPath)macNotification_x86_64.dylib macNotification.m -framework Foundation -arch x86_64" />
-        <Exec Command="clang -dynamiclib -o $(OutputPath)macNotification_arm64.dylib macNotification.m -framework Foundation -arch arm64" />
-        <Exec Command="lipo -create -output $(OutputPath)macNotification.dylib $(OutputPath)macNotification_x86_64.dylib $(OutputPath)macNotification_arm64.dylib" />
-        <Exec Command="rm $(OutputPath)macNotification_x86_64.dylib $(OutputPath)macNotification_arm64.dylib" />
-    </Target>
+		<Exec Command="clang -dynamiclib -o $(OutputPath)macNotification_x86_64.dylib macNotification.m -framework Foundation -arch x86_64" />
+		<Exec Command="clang -dynamiclib -o $(OutputPath)macNotification_arm64.dylib macNotification.m -framework Foundation -arch arm64" />
+		<Exec Command="lipo -create -output $(OutputPath)macNotification.dylib $(OutputPath)macNotification_x86_64.dylib $(OutputPath)macNotification_arm64.dylib" />
+		<Exec Command="rm $(OutputPath)macNotification_x86_64.dylib $(OutputPath)macNotification_arm64.dylib" />
+	</Target>
 
 	<Target Name="CompileWindowsDependencies" BeforeTargets="Build">
 		<Exec Command="dotnet publish -c Release -r win-x64 ../WindowsNotification/WindowsNotification.csproj -o $(OutputPath)lib/"/>
 	</Target>
 
-    <ItemGroup>
-        <None Include="..\README.md" Pack="true" PackagePath="" />
-    </ItemGroup>
+	<ItemGroup>
+		<None Include="..\README.md" Pack="true" PackagePath="" />
+	</ItemGroup>
 	
 	<ItemGroup>
-        <ContentWithTargetPath Include="$(OutputPath)macNotification.dylib">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-            <TargetPath>macNotification.dylib</TargetPath>
-        </ContentWithTargetPath>
-        <None Include="$(OutputPath)macNotification.dylib" />
-    </ItemGroup>
+		<ContentWithTargetPath Include="$(OutputPath)macNotification.dylib">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<TargetPath>macNotification.dylib</TargetPath>
+		</ContentWithTargetPath>
+		<None Include="$(OutputPath)macNotification.dylib" />
+	</ItemGroup>
 
-    <ItemGroup>
-        <Content Include="$(OutputPath)macNotification.dylib">
-            <Pack>true</Pack>
-            <PackageCopyToOutput>true</PackageCopyToOutput>
-            <PackageFlatten>true</PackageFlatten>
-            <PackagePath>runtimes\osx\native\</PackagePath>
-        </Content>
-    </ItemGroup>
+	<ItemGroup>
+		<Content Include="$(OutputPath)macNotification.dylib">
+			<Pack>true</Pack>
+			<PackageCopyToOutput>true</PackageCopyToOutput>
+			<PackageFlatten>true</PackageFlatten>
+			<PackagePath>runtimes\osx\native\</PackagePath>
+		</Content>
+	</ItemGroup>
 
-    <ItemGroup>
-        <Content Include="$(OutputPath)lib\*.dll">
-            <Pack>true</Pack>
-            <PackageCopyToOutput>true</PackageCopyToOutput>
-            <PackageFlatten>true</PackageFlatten>
-            <PackagePath>runtimes\win-x64\native\</PackagePath>
-        </Content>
-    </ItemGroup>
+	<ItemGroup>
+		<Content Include="$(OutputPath)lib\*.dll">
+			<Pack>true</Pack>
+			<PackageCopyToOutput>true</PackageCopyToOutput>
+			<PackageFlatten>true</PackageFlatten>
+			<PackagePath>runtimes\win-x64\native\</PackagePath>
+		</Content>
+	</ItemGroup>
 
 	<ItemGroup>
 		<Content Include="..\ThirdPartyLicenses\Win\*">
