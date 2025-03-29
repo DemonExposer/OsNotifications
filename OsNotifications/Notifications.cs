@@ -6,6 +6,18 @@ namespace OsNotifications;
 
 public partial class Notifications {
 	public static string? BundleIdentifier = null;
+	public static Uri? WindowsAudioSource {
+		get => _windowsAudioSource;
+		set {
+			_windowsAudioSource = value;
+			_playDefaultWindowsSound = false;
+		}
+	}
+
+	private static Uri? _windowsAudioSource = null;
+	private static bool _playDefaultWindowsSound = true;
+
+	public static void ResetWindowsAudioSource() => _playDefaultWindowsSound = true;
 	
 	[LibraryImport("macNotification.dylib")]
 	private static partial void showNotification([MarshalAs(UnmanagedType.LPStr)] string identifier, [MarshalAs(UnmanagedType.LPStr)] string title, [MarshalAs(UnmanagedType.LPStr)] string subtitle, [MarshalAs(UnmanagedType.LPStr)] string informativeText);
@@ -46,6 +58,6 @@ public partial class Notifications {
 		MethodInfo? showNotificationMethod = windowsNotificationClass?.GetMethod("ShowNotification");
 
 		object? instance = Activator.CreateInstance(windowsNotificationClass!);
-		showNotificationMethod?.Invoke(instance, [title, message]);
+		showNotificationMethod?.Invoke(instance, [title, message, !_playDefaultWindowsSound, _windowsAudioSource]);
 	}
 }
