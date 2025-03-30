@@ -24,6 +24,9 @@ public partial class Notifications {
 	private static partial void setGuiApplication(sbyte isGuiValue);
 
 	public static void SetGuiApplication(bool isGuiValue) {
+		if (!RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+			return;
+		
 		setGuiApplication(isGuiValue ? (sbyte) 1 : (sbyte) 0);
 		_isApplicationTypeSpecified = true;
 	}
