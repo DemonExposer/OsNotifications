@@ -15,10 +15,19 @@ public partial class Notifications {
 	}
 
 	private static Uri? _windowsAudioSource = null;
+	private static bool _isApplicationTypeSpecified;
 	private static bool _playDefaultWindowsSound = true;
 
 	public static void ResetWindowsAudioSource() => _playDefaultWindowsSound = true;
-	
+
+	[LibraryImport("macNotification.dylib")]
+	private static partial void setGuiApplication(sbyte isGuiValue);
+
+	public static void SetGuiApplication(bool isGuiValue) {
+		setGuiApplication(isGuiValue ? (sbyte) 1 : (sbyte) 0);
+		_isApplicationTypeSpecified = true;
+	}
+
 	[LibraryImport("macNotification.dylib")]
 	private static partial void showNotification([MarshalAs(UnmanagedType.LPStr)] string identifier, [MarshalAs(UnmanagedType.LPStr)] string title, [MarshalAs(UnmanagedType.LPStr)] string subtitle, [MarshalAs(UnmanagedType.LPStr)] string informativeText);
 	
@@ -37,7 +46,10 @@ public partial class Notifications {
 
 	private static void ShowNotificationMac(string title, string message, string informativeText) {
 		if (BundleIdentifier == null)
-			throw new InvalidOperationException("BundleIdentifier must be set on MacOS before calling ShowNotification. If it is set to a non-existing identifier, no notification will be shown!");
+			throw new InvalidOperationException("BundleIdentifier must be set on MacOS before calling ShowNotification. If it is set to a non-existing identifier, NO notification will be shown!");
+
+		if (!_isApplicationTypeSpecified)
+			throw new InvalidOperationException("SetGuiApplication must be called before calling ShowNotification. If SetGuiApplication is called with false in a GUI application, this method WILL HANG!");
 		
 		showNotification(BundleIdentifier, title, message, informativeText);
 	}

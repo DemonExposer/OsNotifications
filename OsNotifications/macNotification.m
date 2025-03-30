@@ -49,10 +49,16 @@ BOOL installNSBundleHook() {
 
 #pragma mark -
 
+BOOL isGuiApplication = NO;
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-    
+
+void setGuiApplication(BOOL isGuiValue) {
+    isGuiApplication = isGuiValue;
+}
+
 void showNotification(char *identifier, char *title, char *subtitle, char *informativeText) {
     if (installNSBundleHook()) {
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -71,7 +77,7 @@ void showNotification(char *identifier, char *title, char *subtitle, char *infor
         
         [nc deliverNotification:note];
         
-        while (ncDelegate.keepRunning) {
+        while (!isGuiApplication && ncDelegate.keepRunning) {
             [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
         }
     }
