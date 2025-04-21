@@ -60,25 +60,27 @@ void setGuiApplication(BOOL isGuiValue) {
 }
 
 void showNotification(char *identifier, char *title, char *subtitle, char *informativeText) {
-    if (installNSBundleHook()) {
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        
-        fakeBundleIdentifier = [NSString stringWithUTF8String:identifier];
-        
-        NSUserNotificationCenter *nc = [NSUserNotificationCenter defaultUserNotificationCenter];
-        NotificationCenterDelegate *ncDelegate = [[NotificationCenterDelegate alloc]init];
-        ncDelegate.keepRunning = YES;
-        nc.delegate = ncDelegate;
-        
-        NSUserNotification *note = [[NSUserNotification alloc] init];
-        note.title = [NSString stringWithUTF8String:title];
-        note.subtitle = [NSString stringWithUTF8String:subtitle];
-        note.informativeText = [NSString stringWithUTF8String:informativeText];
-        
-        [nc deliverNotification:note];
-        
-        while (!isGuiApplication && ncDelegate.keepRunning) {
-            [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
+    @autoreleasepool {
+        if (installNSBundleHook()) {
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            
+            fakeBundleIdentifier = [NSString stringWithUTF8String:identifier];
+            
+            NSUserNotificationCenter *nc = [NSUserNotificationCenter defaultUserNotificationCenter];
+            NotificationCenterDelegate *ncDelegate = [[NotificationCenterDelegate alloc]init];
+            ncDelegate.keepRunning = YES;
+            nc.delegate = ncDelegate;
+            
+            NSUserNotification *note = [[NSUserNotification alloc] init];
+            note.title = [NSString stringWithUTF8String:title];
+            note.subtitle = [NSString stringWithUTF8String:subtitle];
+            note.informativeText = [NSString stringWithUTF8String:informativeText];
+            
+            [nc deliverNotification:note];
+            
+            while (!isGuiApplication && ncDelegate.keepRunning) {
+                [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
+            }
         }
     }
 }
