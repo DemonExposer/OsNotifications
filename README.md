@@ -8,7 +8,11 @@ For cross-platform compatibility, it's better to always do this. So, creating a 
 ```cs
 Notifications.BundleIdentifier = "com.apple.finder"; // Optional (does nothing for bundled applications)
 Notifications.SetGuiApplication(true); // false for console application
-Notifications.ShowNotification("notification-title");
+try {
+    Notifications.ShowNotification("notification-title");
+} catch (PlatformNotSupportedException e) {
+    // Handle exception
+}
 ```
 
 Of course this works without flaws on Linux and MacOS, but not on Windows... <br/>

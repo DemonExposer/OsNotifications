@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.ComponentModel;
+using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -45,7 +46,13 @@ public partial class Notifications {
 			throw new PlatformNotSupportedException("Notifications are only supported on Linux, MacOS and Windows");
 	}
 
-	private static void ShowNotificationLinux(string title, string message) => Process.Start("notify-send", $"\"{title}\" \"{message}\"").WaitForExit();
+	private static void ShowNotificationLinux(string title, string message) {
+		try {
+			Process.Start("notify-send", $"\"{title}\" \"{message}\"").WaitForExit();
+		} catch (Win32Exception) {
+			throw new PlatformNotSupportedException("Notifications are not supported on this Linux distro");
+		}
+	}
 
 	private static void ShowNotificationMac(string title, string message, string informativeText) {
 		if (!_isApplicationTypeSpecified)
