@@ -3,10 +3,10 @@
 ## Usage
 Calling `Notifications.ShowNotification` will display a notification using your OS's notification manager.
 
-On MacOS, you need to specify the `BundleIdentifier` and this needs to correspond to a defined identifier, otherwise no notification will be shown. Also, it must be specified whether the application is a console or GUI application, using `SetGuiApplication`, because if it is a GUI application and it is specified that it is a console application, the application would hang.
+On MacOS, if you are working without a bundle and you do not want the notification to show Apple's "Finder", you need to specify the `BundleIdentifier` and this needs to correspond to a defined identifier, otherwise no notification will be shown. It is better to bundle your application to get your own application's icon to show up, but you could spoof another application as well (there is no guarantee that this works with every application though). Also, it must be specified whether the application is a console or GUI application, using `SetGuiApplication`, because if it is a GUI application and it is specified that it is a console application, the application would hang.
 For cross-platform compatibility, it's better to always do this. So, creating a notification will look like this:
 ```cs
-Notifications.BundleIdentifier = "com.apple.finder";
+Notifications.BundleIdentifier = "com.apple.finder"; // Optional (does nothing for bundled applications)
 Notifications.SetGuiApplication(true); // false for console application
 Notifications.ShowNotification("notification-title");
 ```
