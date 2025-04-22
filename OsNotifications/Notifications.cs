@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 namespace OsNotifications;
 
 public partial class Notifications {
-	public static string? BundleIdentifier = null;
+	public static string BundleIdentifier = "";
 	public static Uri? WindowsAudioSource {
 		get => _windowsAudioSource;
 		set {
@@ -48,9 +48,6 @@ public partial class Notifications {
 	private static void ShowNotificationLinux(string title, string message) => Process.Start("notify-send", $"\"{title}\" \"{message}\"").WaitForExit();
 
 	private static void ShowNotificationMac(string title, string message, string informativeText) {
-		if (BundleIdentifier == null)
-			throw new InvalidOperationException("BundleIdentifier must be set on MacOS before calling ShowNotification. If it is set to a non-existing identifier, NO notification will be shown!");
-
 		if (!_isApplicationTypeSpecified)
 			throw new InvalidOperationException("SetGuiApplication must be called before calling ShowNotification. If SetGuiApplication is called with false in a GUI application, this method WILL HANG!");
 		

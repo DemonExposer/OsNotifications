@@ -64,10 +64,11 @@ void showNotification(char *identifier, char *title, char *subtitle, char *infor
         if (installNSBundleHook()) {
             NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
             
-            fakeBundleIdentifier = [NSString stringWithUTF8String:identifier];
+            if (identifier != NULL && identifier[0] != 0)
+                fakeBundleIdentifier = [NSString stringWithUTF8String:identifier];
             
             NSUserNotificationCenter *nc = [NSUserNotificationCenter defaultUserNotificationCenter];
-            NotificationCenterDelegate *ncDelegate = [[NotificationCenterDelegate alloc]init];
+            NotificationCenterDelegate *ncDelegate = [[NotificationCenterDelegate alloc] init];
             ncDelegate.keepRunning = YES;
             nc.delegate = ncDelegate;
             
