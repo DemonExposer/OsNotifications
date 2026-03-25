@@ -1,23 +1,48 @@
-﻿using System.ComponentModel;
-using System.Diagnostics;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.InteropServices;
+using Tmds.DBus;
 
 namespace OsNotifications;
 
+[DBusInterface("org.freedesktop.Notifications")]
+public interface INotifier : IDBusObject {
+	Task<uint> NotifyAsync(
+		string appName,
+		uint replacesId,
+		string appIcon,
+		string summary,
+		string body,
+		string[] actions,
+		IDictionary<string, object> hints,
+		int expireTimeout);
+}
+
 public partial class Notifications {
 	public static string BundleIdentifier = "";
+
 	public static Uri? WindowsAudioSource {
-		get => _windowsAudioSource;
+		get;
 		set {
-			_windowsAudioSource = value;
+			field = value;
 			_playDefaultWindowsSound = false;
 		}
 	}
 
-	private static Uri? _windowsAudioSource = null;
 	private static bool _isApplicationTypeSpecified;
 	private static bool _playDefaultWindowsSound = true;
+	private static readonly INotifier? Notifier;
+
+	static Notifications() {
+		if (!RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+			return;
+		
+		// TODO: dispose this
+		Connection? connection = Connection.Session;
+		connection.ConnectAsync().GetAwaiter().GetResult();
+		Notifier = connection.CreateProxy<INotifier>(
+			"org.freedesktop.Notifications",
+			"/org/freedesktop/Notifications");
+	}
 
 	public static void ResetWindowsAudioSource() => _playDefaultWindowsSound = true;
 
@@ -47,11 +72,8 @@ public partial class Notifications {
 	}
 
 	private static void ShowNotificationLinux(string title, string message) {
-		try {
-			Process.Start("notify-send", $"\"{title}\" \"{message}\"").WaitForExit();
-		} catch (Win32Exception) {
-			throw new PlatformNotSupportedException("Notifications are not supported on this Linux distro");
-		}
+		Notifier!.NotifyAsync("", 0, "", title, message,
+			[], new Dictionary<string, object>(), 5000).GetAwaiter().GetResult();
 	}
 
 	private static void ShowNotificationMac(string title, string message, string informativeText) {
@@ -77,6 +99,6 @@ public partial class Notifications {
 		MethodInfo? showNotificationMethod = windowsNotificationClass?.GetMethod("ShowNotification");
 
 		object? instance = Activator.CreateInstance(windowsNotificationClass!);
-		showNotificationMethod?.Invoke(instance, [title, message, !_playDefaultWindowsSound, _windowsAudioSource]);
+		showNotificationMethod?.Invoke(instance, [title, message, !_playDefaultWindowsSound, WindowsAudioSource]);
 	}
 }
