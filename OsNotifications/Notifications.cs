@@ -36,12 +36,13 @@ public partial class Notifications {
 		if (!RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
 			return;
 		
-		// TODO: dispose this
 		Connection? connection = Connection.Session;
 		connection.ConnectAsync().GetAwaiter().GetResult();
 		Notifier = connection.CreateProxy<INotifier>(
 			"org.freedesktop.Notifications",
 			"/org/freedesktop/Notifications");
+
+		AppDomain.CurrentDomain.ProcessExit += (_, _) => connection.Dispose();
 	}
 
 	public static void ResetWindowsAudioSource() => _playDefaultWindowsSound = true;
@@ -72,7 +73,7 @@ public partial class Notifications {
 	}
 
 	private static void ShowNotificationLinux(string title, string message) {
-		Notifier!.NotifyAsync("", 0, "", title, message,
+		Notifier!.NotifyAsync(Assembly.GetEntryAssembly()?.GetName().Name ?? "", 0, "", title, message,
 			[], new Dictionary<string, object>(), 5000).GetAwaiter().GetResult();
 	}
 
