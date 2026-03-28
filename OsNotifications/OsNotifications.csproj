@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>net10.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-		<Version>1.1.3</Version>
+		<Version>1.1.4</Version>
 		<Authors>DemonExposer</Authors>
 		<Description>Native OS notifications in .NET</Description>
 		<RepositoryUrl>https://github.com/DemonExposer/OsNotifications</RepositoryUrl>
@@ -12,8 +12,9 @@
 		<PackageProjectUrl>https://github.com/DemonExposer/OsNotifications</PackageProjectUrl>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageTags>notifications;os-notifications;console;GUI;macos;linux;windows;user-notifications;toast-notifications;popup-notifications;native-notifications</PackageTags>
 		<Title>OsNotifications</Title>
-		<Copyright>Copyright (c) 2025 DemonExposer</Copyright>
+		<Copyright>Copyright (c) 2026 DemonExposer</Copyright>
 	</PropertyGroup>
 
 	<Target Name="CompileMacDependencies" BeforeTargets="Build">
@@ -64,6 +65,10 @@
 			<PackageFlatten>true</PackageFlatten>
 			<PackagePath>runtimes\win-x64\native\</PackagePath>
 		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Tmds.DBus" Version="0.91.1" />
 	</ItemGroup>
 
 	<Target Name="CleanLib" AfterTargets="Clean">
